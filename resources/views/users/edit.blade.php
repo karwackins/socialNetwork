@@ -16,7 +16,12 @@
                                 <div class="col-sm-10 col-sm-offset-2">
                                     <div class="form-group">
                                         <label for="name">Imię i nazwisko</label>
-                                        <input name="name" type="text" class="form-control" value="{{ $user->name }}">
+                                        <input name="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{ $user->name }}">
+                                        @if ($errors->has('name'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('name') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -25,7 +30,12 @@
                                 <div class="col-sm-10 col-sm-offset-2">
                                     <div class="form-group">
                                         <label for="">Email</label>
-                                        <input name="email" type="email" class="form-control" value="{{ $user->email }}">
+                                        <input name="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ $user->email }}">
+                                        @if ($errors->has('email'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('email') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
