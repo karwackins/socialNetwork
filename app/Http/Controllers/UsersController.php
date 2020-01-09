@@ -95,11 +95,22 @@ class UsersController extends Controller
             'unique' => 'Inny użytkownik ma już taki adres e-mail',
         ]);
 
+
         $user = User::findOrFail($id);
         $user->name = $request->name;
         $user->email = $request->email;
         $user->sex = $request->sex;
+
+        if($request->file('avatar'))
+        {
+            $upload_path = 'public/users/' .$id. '/avatars';
+            $path = $request->file('avatar')->store($upload_path);
+            $avatar_filename = str_replace($upload_path.'/','',$path);
+            $user->avatar = $avatar_filename;
+        }
         $user->save();
+
+
         return back();
     }
 

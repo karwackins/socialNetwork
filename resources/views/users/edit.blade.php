@@ -8,10 +8,30 @@
                 <div class="card">
                     <div class="card-header">Edycja użytkownika</div>
                     <div class="card-body">
-                        <form action="{{ url('/users/'.$user->id) }}" method="POST">
+                        <div class="row text-center">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <img src="{{ url('/user-avatar/'.$user->id.'/200') }}" alt="" class="img-responsive img-thumbnail">
+                                </div>
+                            </div>
+                        </div>
+                        <form action="{{ url('/users/'.$user->id) }}" method="POST" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             {{ method_field('PATCH') }}
 
+                            <div class="row">
+                                <div class="col-sm-10 col-sm-offset-2">
+                                    <div class="form-group">
+                                        <label for="">Avatar</label>
+                                        <input name="avatar" type="file" class="form-control{{ $errors->has('avatar') ? ' is-invalid' : '' }}">
+                                        @if ($errors->has('avatar'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('avatar') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-sm-10 col-sm-offset-2">
                                     <div class="form-group">
