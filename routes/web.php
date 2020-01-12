@@ -19,6 +19,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/search', 'SearchController@users');
 
 Route::resource('/users', 'UsersController');
 Route::get('user-avatar/{id}/{size}', 'ImagesController@userAvatar');
