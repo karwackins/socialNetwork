@@ -19,8 +19,14 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
 Route::get('/search', 'SearchController@users');
 
 Route::resource('/users', 'UsersController');
-Route::resource('/friends', 'FriendsController');
+
+Route::get('/friends', 'FriendsController@index');
+Route::post('/friends/{friend}', 'FriendsController@add');
+Route::patch('/friends/{friend}', 'FriendsController@accept');
+Route::delete('/friends/{friend}', 'FriendsController@destroy');
+
 Route::get('user-avatar/{id}/{size}', 'ImagesController@userAvatar');
