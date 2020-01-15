@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Friend;
+use App\User;
 use http\Exception\BadConversionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,9 +15,10 @@ class FriendsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($user_id)
     {
-        return test();
+        $friends = User::findOrFail($user_id)->friends();
+        return view('friends.index', compact('friends'));
     }
 
 
