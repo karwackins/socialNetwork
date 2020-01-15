@@ -23,11 +23,30 @@
             <p>{{ $user->email }}</p>
 
             @if(Auth::check() && Auth::id() !== $user->id)
+
+                @if(!friendship($user->id)->exists && !check_invite($user->id))
                 <form action="{{ url('/friends/'.$user->id) }}" method="POST">
                     {{ csrf_field() }}
                     <button class="btn btn-success">Zaproś do znajomych</button>
                 </form>
 
+                @elseif(check_invite($user->id))
+                    <form action="{{ url('/friends/'.$user->id) }}" method="POST">
+                        {{ csrf_field() }}
+                        {{ method_field('PATCH') }}
+                        <button class="btn btn-primary">Przyjmij zaproszenie</button>
+                    </form>
+
+                @elseif(friendship($user->id)->exists && !friendship($user->id)->accepted)
+                    <button class="btn btn-success disabled">Wysłano zaproszenie</button>
+
+                @elseif(friendship($user->id)->exists && friendship($user->id)->accepted)
+                <form action="{{ url('/friends/'.$user->id) }}" method="POST">
+                    {{ csrf_field() }}
+                    {{ method_field('DELETE') }}
+                    <button class="btn btn-danger">Usuń ze znajomych</button>
+                </form>
+                @endif
             @endif
 
         </div>

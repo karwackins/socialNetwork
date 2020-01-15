@@ -16,7 +16,7 @@ class FriendsController extends Controller
      */
     public function index()
     {
-        //
+        return test();
     }
 
 
@@ -28,10 +28,17 @@ class FriendsController extends Controller
      */
     public function add($friend_id)
     {
-        Friend::create([
-        'friend_id' => $friend_id,
-        'user_id' => Auth::id(),
-        ]);
+        if(!friendship($friend_id)->exists)
+        {
+            Friend::create([
+                'friend_id' => $friend_id,
+                'user_id' => Auth::id(),
+            ]);
+        } else
+        {
+            $this->accept($friend_id);
+        }
+
 
         return back();
     }
@@ -46,7 +53,14 @@ class FriendsController extends Controller
      */
     public function accept($friend_id)
     {
-        //
+            Friend::where([
+                'friend_id' => Auth::id(),
+                'user_id' => $friend_id,
+            ])->update([
+                'accept' => 1
+            ]);
+
+        return back();
     }
 
     /**
@@ -55,8 +69,18 @@ class FriendsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($friend_id)
     {
-        //
+        $user_id = Auth::id();
+
+        Friend::where(function ($query) use ($friend_id, $user_id) {
+            $query->where('user_id', $user_id);
+            $query->where('friend_id', $friend_id);
+        })->orWhere(function ($query) use ($friend_id, $user_id) {
+            $query->where('user_id', $friend_id);
+            $query->where('friend_id', $user_id)->delete();
+        });
+        return back();
     }
+
 }
