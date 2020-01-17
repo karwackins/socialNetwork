@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use Illuminate\Support\Facades\Hash;
+use App\Friend;
 
 class DatabaseSeeder extends Seeder
 {
@@ -54,7 +55,28 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
 
+            for ($user_id = 1; $user_id <= $faker->numberBetween($min = 0, $max = $number_of_users - 1); $user_id++) {
 
+                $friend_id = $faker->numberBetween($min = 0, $max = $number_of_users);
+
+                $friendship = Friend::where(function ($query) use( $user_id, $friend_id) {
+                    $query->where('user_id', $friend_id);
+                    $query->where('friend_id', $user_id);
+                })->orWhere(function ($query) use( $user_id, $friend_id){
+                    $query->where('user_id', $user_id);
+                    $query->where('friend_id', $friend_id);
+                })->exists();
+
+                if(!$friendship)
+                {
+                    DB::table('friends')->insert([
+                       'user_id' => $user_id,
+                       'friend_id' => $friend_id,
+                       'accept' => $faker->numberBetween(0,1),
+                       'created_at' => $faker->dateTimeThisYear(now())
+                    ]);
+                }
+            }
 
         }
 

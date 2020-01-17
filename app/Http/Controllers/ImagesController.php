@@ -10,18 +10,23 @@ class ImagesController extends Controller
 {
     public function userAvatar($id, $size)
     {
-        $user_avatar = User::findOrFail($id);
-        if(strpos($user_avatar->avatar, 'http') !== false)
+        $user = User::findOrFail($id);
+        if(is_null($user->avatar))
         {
-            $img = Image::make($user_avatar->avatar)->fit($size)->response('jpg', '100');
+            if($user->sex == 'm' )
+                $img = Image::make('https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male-512.png')->fit($size)->response('png', '100');
+            else
+                $img = Image::make('https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_female-512.png')->fit($size)->response('png', '100');
 
+        } elseif(strpos($user->avatar, 'http') !== false)
+        {
+            $img = Image::make($user->avatar)->fit($size)->response('jpg', '100');
         } else
         {
-            $avatar_path = asset('/storage/users/'. $id .'/avatars/'.$user_avatar->avatar);
+
+            $avatar_path = asset('/storage/users/'. $id .'/avatars/'.$user->avatar);
             $img = Image::make($avatar_path)->fit($size)->response('jpg', '100');
         }
-
-
         return $img;
 
     }

@@ -5,10 +5,10 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
-                    <div class="card-header">Lista znajomych</div>
+                    <div class="card-header">Lista znajomych: <span>{{ $users->count() }}</span></div>
                     <div class="card-body">
                         <div class="row">
-                            @foreach($friends as $user)
+                            @foreach($users as $user)
                                 <div class="col-sm-4 col-offset-6 text-center">
                                     <a href="{{ url('/users/'.$user->id) }}">
                                         <div class="img-responsive img-thumbnail">

@@ -17,8 +17,8 @@ class FriendsController extends Controller
      */
     public function index($user_id)
     {
-        $friends = User::findOrFail($user_id)->friends();
-        return view('friends.index', compact('friends'));
+        $users = User::findOrFail($user_id)->friends();
+        return view('friends.index', compact('users'));
     }
 
 
