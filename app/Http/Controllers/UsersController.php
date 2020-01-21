@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Friend;
 use Illuminate\Http\Request;
 use App\User;
 use App\Post;
@@ -55,7 +56,15 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
-        $posts= Post::where('user_id', $id)->orderBy('created_at', 'desc')->get();
+        $friends = $user->friends();
+        $id_mine_friends = [];
+        foreach ($friends as $friend)
+        {
+            $id_mine_friends[] = $user->id;
+            $id_mine_friends[] = $friend->id;
+        }
+
+        $posts= Post::whereIn('user_id', $id_mine_friends)->orderBy('created_at', 'desc')->get();
         return view('users.show', compact('user','posts'));
     }
 

@@ -2,21 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Friend;
 use App\Post;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 
-class PostsController extends Controller
+class WallsController extends Controller
 {
-
-    public function __construct()
-    {
-//        $this->middleware('post_permission',['except' => ['show', 'store']]);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -24,10 +15,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $user = User::findOrFail(Auth::id());
-
-        $posts= Post::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
-        return view('users.show', compact('user','posts'));
+        //
     }
 
     /**
@@ -48,18 +36,7 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'post_content' => 'required|min:5',
-        ],[
-            'required' => 'Musisz coś wpisać',
-            'min' => 'Wpis musi zawierać co najmniej :min znaków',
-        ]);
-
-        Post::create([
-            'user_id' => Auth::id(),
-            'content' =>$request->post_content,
-        ]);
-        return back();
+        //
     }
 
     /**
@@ -70,8 +47,17 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        $post = Post::findOrFail($id);
-        return view('posts.single', compact('post'));
+        $user = User::findOrFail($id);
+        $friends = $user->friends();
+        $id_mine_friends = [];
+        foreach ($friends as $friend)
+        {
+            $id_mine_friends[] = $user->id;
+            $id_mine_friends[] = $friend->id;
+        }
+
+        $posts= Post::whereIn('user_id', $id_mine_friends)->orderBy('created_at', 'desc')->get();
+        return view('users.show', compact('user','posts'));
     }
 
     /**
@@ -82,8 +68,7 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::findOrFail($id);
-        return view('posts.edit', compact('post'));
+        //
     }
 
     /**
@@ -95,9 +80,7 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-       Post::where('id',$id)->update([
-           'content' => $request->post_content,
-       ]);
+        //
     }
 
     /**
@@ -108,7 +91,6 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        Post::where('id',$id)->delete();
-        return back();
+        //
     }
 }
