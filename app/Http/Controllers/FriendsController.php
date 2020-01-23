@@ -78,11 +78,10 @@ class FriendsController extends Controller
         Friend::where(function ($query) use ($friend_id, $user_id) {
             $query->where('user_id', $user_id);
             $query->where('friend_id', $friend_id);
-        })->orWhere(function ($query) use ($friend_id, $user_id) {
-            $query->where('user_id', $friend_id);
-            $query->where('friend_id', $user_id)->delete();
-        });
+        })->delete();
+
         return back();
+
     }
 
 }
