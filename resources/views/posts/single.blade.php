@@ -15,8 +15,24 @@
                 <p>{{ $post->content }}</p>
             </div>
             <div class="card-footer bg-transparent border-grey">
-                <div class="float-left"><a href="{{ url('posts/'.$post->id.'/edit') }}">Edytuj</a></div>
-                <div class="">Usuń</div>
+{{--                <div class="float-left"><a href="{{ url('posts/'.$post->id.'/edit') }}">Edytuj</a></div>--}}
+{{--                <div class="">Usuń</div>--}}
+                <div class="card-footer bg-transparent border-grey">
+                    <div style="margin: auto; width: 100%">
+                        <div class="float-left"><strong>Komentarze:</strong></div>
+                        <div class="float-right"><a href="{{ url('/posts/'.$post->id) }}">Zobacz wszystkie</a></div>
+                    </div>
+                    <br>
+                    <hr>
+                    <div>
+                        @foreach($comments as $comment)
+                            <img src="{{ url('/user-avatar/'.$comment->user->id.'/25') }}" alt="" class="img-responsive img-thumbnail">
+                            <b>{{ $comment->user->name }}</b><br>
+                            {{$comment->content}}<br>
+                            <hr>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </div>

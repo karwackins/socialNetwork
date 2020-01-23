@@ -13,10 +13,34 @@
     <div class="card-body">
         <p>{{ $post->content }}</p>
     </div>
+
     <div class="card-footer bg-transparent border-grey">
-        <div class="float-left"></div>
-        <div class="">
+        <div style="margin: auto; width: 100%">
+            <div class="float-left"><strong>Komentarze:</strong></div>
+            <div class="float-right"><a href="{{ url('/posts/'.$post->id) }}">Zobacz wszystkie</a></div>
+        </div>
+        <br>
+        <hr>
+        <div class="form-group">
+
+                @foreach($comments as $comment)
+                    @if($comment->post_id == $post->id)
+                        <img src="{{ url('/user-avatar/'.$comment->user->id.'/25') }}" alt="" class="img-responsive img-thumbnail">
+                        <b>{{ $comment->user->name }}</b><br>
+                        {{$comment->content}}<br>
+                        <hr>
+                    @endif
+                @endforeach
 
         </div>
-    </div>
+    @if(Auth::check())
+        <div class="form-group">
+            <form action="{{ url('/comments/'.$post->id) }}" method="POST">
+                {{ csrf_field() }}
+                <input name="comment" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="Skomentuj to ... ">
+                <button type="submit" class="float-right btn">Dodaj</button>
+            </form>
+        </div>
+    @endif
+</div>
 </div>

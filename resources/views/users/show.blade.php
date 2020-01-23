@@ -14,5 +14,6 @@
                     @endforeach
             </div>
         </div>
+        {{ $posts }}
     </div>
 @endsection

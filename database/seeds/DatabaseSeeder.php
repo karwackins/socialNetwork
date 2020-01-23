@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
 
         //------------------------------------------------
         $number_of_users = 20;
+        $number_of_posts = 20;
+        $number_of_comments = 5;
         $pass = 'pass';
         //------------------------------------------------
 
@@ -77,6 +79,27 @@ class DatabaseSeeder extends Seeder
                     ]);
                 }
             }
+
+            for($post=1; $post<=$number_of_posts; $post++)
+            {
+                DB::table('posts')->insert([
+                    'content' => $faker->paragraph(2,true),
+                    'user_id' => $faker->numberBetween(1, $number_of_users),
+                    'created_at' => $faker->dateTime(now())
+                ]);
+            }
+
+            for($comment=1; $comment<=$number_of_comments; $comment++)
+            {
+                DB::table('comments')->insert([
+                    'content' => $faker->paragraph(2,true),
+                    'user_id' => $faker->numberBetween(1, $number_of_users),
+                    'post_id' => $faker->numberBetween(1, $number_of_posts),
+                    'created_at' => $faker->dateTime(now())
+                ]);
+            }
+
+
 
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\Friend;
 use Illuminate\Http\Request;
 use App\User;
@@ -60,12 +61,21 @@ class UsersController extends Controller
         $id_mine_friends = [];
         foreach ($friends as $friend)
         {
-            $id_mine_friends[] = $user->id;
             $id_mine_friends[] = $friend->id;
         }
+        $id_mine_friends[] = Auth::id();
 
-        $posts= Post::whereIn('user_id', $id_mine_friends)->orderBy('created_at', 'desc')->get();
-        return view('users.show', compact('user','posts'));
+        $posts_id= Post::whereIn('user_id', $id_mine_friends)->orderBy('created_at', 'desc')->get();
+        $posts= Post::whereIn('user_id', $id_mine_friends)->orderBy('created_at', 'desc')->paginate(10);
+        $id_posts = [];
+        foreach ($posts_id as $post)
+        {
+            $id_posts[] = $post->id;
+        }
+
+        $comments = Comment::whereIn('post_id', $id_posts)->orderBy('created_at', 'desc')->limit(5)->get();
+
+        return view('users.show', compact('user','posts', 'comments'));
     }
 
     /**
