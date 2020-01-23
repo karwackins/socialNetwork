@@ -57,13 +57,15 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
+
         $friends = $user->friends();
+
         $id_mine_friends = [];
         foreach ($friends as $friend)
         {
             $id_mine_friends[] = $friend->id;
         }
-        $id_mine_friends[] = Auth::id();
+        $id_mine_friends[] = $user->id;
 
         $posts_id= Post::whereIn('user_id', $id_mine_friends)->orderBy('created_at', 'desc')->get();
         $posts= Post::whereIn('user_id', $id_mine_friends)->orderBy('created_at', 'desc')->paginate(10);
