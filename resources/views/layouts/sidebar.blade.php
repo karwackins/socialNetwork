@@ -27,9 +27,8 @@
             <div class="form-group">
                 <a href="{{ url('/users/'.$user->id.'/friend') }}">Znajomi </a><span class="badge badge-primary">{{ $user->friends()->count() }}</span>
             </div>
-            <div class="form-group">
-                <a href="{{ url('/posts') }}">Moje posty </a><span class="badge badge-primary">{{ $posts->count() }}</span>
-            </div>
+
+
 
             @if(Auth::check() && Auth::id() !== $user->id)
 

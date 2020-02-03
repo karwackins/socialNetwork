@@ -24,7 +24,9 @@ Route::get('/search', 'SearchController@users');
 
 Route::resource('/users', 'UsersController');
 Route::resource('/posts', 'PostsController');
-Route::post('/comments/{post}', 'CommentsController@store');
+Route::resource('/comments', 'CommentsController');
+
+Route::get('/wall', 'WallsController@index');
 
 Route::get('users/{user}/friend', 'FriendsController@index');
 Route::post('/friends/{friend}', 'FriendsController@add');

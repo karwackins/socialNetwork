@@ -10,10 +10,10 @@
                 @endif
 
                     @foreach($posts as $post)
-                        @include('posts.show')
+                        @include('posts.include.single')
                     @endforeach
             </div>
+            {{ $posts }}
         </div>
-        {{ $posts }}
     </div>
 @endsection

@@ -34,12 +34,12 @@ class CommentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $post_id)
+    public function store(Request $request)
     {
         Comment::create([
             'user_id' => Auth::id(),
-            'post_id' => $post_id,
-            'content' => $request->comment
+            'post_id' => $request->post_id,
+            'content' => $request->comment_content
         ]);
         return back();
     }
@@ -63,7 +63,8 @@ class CommentsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $comment = Comment::findOrFail($id);
+        return view('comments.edit', compact('comment'));
     }
 
     /**
@@ -75,7 +76,9 @@ class CommentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Comment::where('id',$id)->update([
+            'content' => $request->comment_content,
+        ]);
     }
 
     /**
@@ -86,6 +89,7 @@ class CommentsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Comment::where('id',$id)->delete();
+        return back();
     }
 }

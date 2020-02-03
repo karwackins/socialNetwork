@@ -57,27 +57,10 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
-
-        $friends = $user->friends();
-
-        $id_mine_friends = [];
-        foreach ($friends as $friend)
-        {
-            $id_mine_friends[] = $friend->id;
-        }
-        $id_mine_friends[] = $user->id;
-
-        $posts_id= Post::whereIn('user_id', $id_mine_friends)->orderBy('created_at', 'desc')->get();
-        $posts= Post::whereIn('user_id', $id_mine_friends)->orderBy('created_at', 'desc')->paginate(10);
-        $id_posts = [];
-        foreach ($posts_id as $post)
-        {
-            $id_posts[] = $post->id;
-        }
-
-        $comments = Comment::whereIn('post_id', $id_posts)->orderBy('created_at', 'desc')->limit(5)->get();
-
-        return view('users.show', compact('user','posts', 'comments'));
+        // $posts = $user->posts()->paginate(10); // niewydajne rozwiązanie
+        $posts = Post::with('comments.user')
+            ->where('user_id', $id)->orderBy('created_at', 'desc')->paginate(10); // eager loading (optymalizacja zapytań do bazy)
+        return view('users.show', compact('user', 'posts'));
     }
 
     /**

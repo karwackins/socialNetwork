@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\Post;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WallsController extends Controller
 {
@@ -15,7 +17,21 @@ class WallsController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+
+        $friends = $user->friends();
+
+        $id_mine_friends = [];
+        foreach ($friends as $friend)
+        {
+            $id_mine_friends[] = $friend->id;
+        }
+        $id_mine_friends[] = $user->id;
+
+        $posts= Post::with('comments')->whereIn('user_id', $id_mine_friends)->orderBy('created_at', 'desc')->paginate(10);
+
+
+        return view('users.show', compact('user','posts'));
     }
 
     /**
@@ -47,17 +63,7 @@ class WallsController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-        $friends = $user->friends();
-        $id_mine_friends = [];
-        foreach ($friends as $friend)
-        {
-            $id_mine_friends[] = $user->id;
-            $id_mine_friends[] = $friend->id;
-        }
 
-        $posts= Post::whereIn('user_id', $id_mine_friends)->orderBy('created_at', 'desc')->get();
-        return view('users.show', compact('user','posts'));
     }
 
     /**
