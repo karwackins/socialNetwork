@@ -37,3 +37,13 @@ function check_invite($friend_id)
         'accept' => 0,
     ])->exists();
 }
+
+function belongs_to_auth($user_id)
+{
+    return Auth::check() && $user_id === Auth::id();
+}
+
+function is_admin()
+{
+    return Auth::check() && Auth::user()->role->type === 'admin';
+}

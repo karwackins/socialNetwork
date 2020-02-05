@@ -21,7 +21,7 @@ class CheckPostPermission
             'id' => $request->post,
             'user_id' => Auth::id(),
         ])->exists();
-        if(!Auth::check() || ! $post_exist)
+        if((!Auth::check() || ! $post_exist) && ! is_admin())
         {
             abort(403, 'Brak dostępu');
         }

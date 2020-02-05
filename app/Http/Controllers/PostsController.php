@@ -15,7 +15,7 @@ class PostsController extends Controller
 
     public function __construct()
     {
-//        $this->middleware('post_permission',['except' => ['show', 'store']]);
+        $this->middleware('post_permission',['except' => ['show', 'store']]);
     }
 
     /**
@@ -111,7 +111,9 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        Post::where('id',$id)->delete();
+        $post = Post::find($id);
+        $post->delete();
+        $post->comments()->delete();
         return back();
     }
 }

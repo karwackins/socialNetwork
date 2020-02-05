@@ -2,7 +2,7 @@
     <div class="container">
         <div class="card bg-light mb-3">
             <div class="card-header">
-                @if(Auth::check() && $post->user_id === Auth::id())
+                @if(belongs_to_auth(Auth::id()) || is_admin())
                     @include('posts.include.dropdown')
                 @endif
                 <div class="float-left" style="margin-right: 5px">

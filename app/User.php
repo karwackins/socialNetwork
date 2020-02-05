@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Friend;
+use App\Role;
 
 class User extends Authenticatable
 {
@@ -17,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'sex',
+        'name', 'email', 'password', 'sex', 'role_id',
     ];
 
     /**
@@ -53,5 +54,10 @@ class User extends Authenticatable
     function friends()
     {
         return $this->friendsOfOther->merge($this->friendsOfMine);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo('App\Role');
     }
 }

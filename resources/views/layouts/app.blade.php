@@ -59,7 +59,7 @@
                             @endif
                         @else
                             <li class="nav-item">
-                                @if(Auth::check() && Auth::id() === $user->id)
+                                @if(Auth::check())
                                     <div class="form-group">
                                         <a  class="nav-link" href="{{ url('/wall') }}">Tablica </a>
                                     </div>

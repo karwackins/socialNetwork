@@ -24,6 +24,15 @@ class DatabaseSeeder extends Seeder
         $pass = 'pass';
         //------------------------------------------------
 
+        DB::table('roles')->insert([
+            'id' => 1,
+            'type' => 'admin'
+        ]);
+
+        DB::table('roles')->insert([
+            'id' => 2,
+            'type' => 'user'
+        ]);
         for($i=1; $i <= $number_of_users; $i++)
         {
             if($i === 1)
@@ -32,6 +41,7 @@ class DatabaseSeeder extends Seeder
                     'name' => 'Damian Karwacki',
                     'email' => 'damian@damian.pl',
                     'sex' => 'm',
+                    'role_id' => 1,
                     'password' => Hash::make('damian'),
                 ]);
             } else
@@ -53,6 +63,7 @@ class DatabaseSeeder extends Seeder
                     'email' => str_replace('-','',str_slug($name).'@'.$faker->safeEmailDomain),
                     'sex' => $sex,
                     'avatar' => $avatar,
+                    'role_id' => 2,
                     'password' => Hash::make($pass),
                 ]);
             }
@@ -98,6 +109,7 @@ class DatabaseSeeder extends Seeder
                     'created_at' => $faker->dateTime(now())
                 ]);
             }
+
 
 
 

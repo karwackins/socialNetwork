@@ -3,7 +3,7 @@
     <hr style="margin: 10px 0;">
 @endif
 
-@if(Auth::check() && $comment->user_id === Auth::id())
+@if(belongs_to_auth(Auth::id()) || is_admin())
     @include('comments.include.dropdown_menu')
 @endif
 
