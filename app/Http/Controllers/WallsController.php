@@ -28,7 +28,15 @@ class WallsController extends Controller
         }
         $id_mine_friends[] = $user->id;
 
-        $posts= Post::with('comments')->whereIn('user_id', $id_mine_friends)->orderBy('created_at', 'desc')->paginate(10);
+        if(is_admin())
+        {
+            $posts= Post::with('comments')->whereIn('user_id', $id_mine_friends)->orderBy('created_at', 'desc')
+                ->withTrashed()->paginate(10);
+        } else
+        {
+            $posts= Post::with('comments')->whereIn('user_id', $id_mine_friends)->orderBy('created_at', 'desc')->paginate(10);
+        }
+
 
 
         return view('users.show', compact('user','posts'));

@@ -1,5 +1,5 @@
 
-    <div class="container">
+    <div class="container {{($post->trashed()) ? 'trashed' : ''}}">
         <div class="card bg-light mb-3">
             <div class="card-header">
                 @if(belongs_to_auth(Auth::id()) || is_admin())

@@ -7,7 +7,7 @@
     @include('comments.include.dropdown_menu')
 @endif
 
-<div id="comment_{{ $comment->id }}">
+<div id="comment_{{ $comment->id }}" class="{{($comment->trashed()) ? 'trashed' : ''}}">
     <div class="float-left">
         <img src="{{ url('user-avatar/'. $comment->user->id. '/35') }}" alt="" class="img-responsive pull-left">
     </div>

@@ -16,3 +16,15 @@
     color: #262626;
     background-color: #f8f9fa;
 }
+
+.trashed
+{
+    opacity: 0.3;
+    /*background-color: lightsteelblue;*/
+}
+
+.trashed:hover
+{
+    opacity: 1;
+    transition: .5s;
+}

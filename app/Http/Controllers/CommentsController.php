@@ -79,6 +79,7 @@ class CommentsController extends Controller
         Comment::where('id',$id)->update([
             'content' => $request->comment_content,
         ]);
+        return back();
     }
 
     /**
