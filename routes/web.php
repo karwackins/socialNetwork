@@ -34,3 +34,6 @@ Route::patch('/friends/{friend}', 'FriendsController@accept');
 Route::delete('/friends/{friend}', 'FriendsController@destroy');
 
 Route::get('user-avatar/{id}/{size}', 'ImagesController@userAvatar');
+
+Route::post('/likes', 'LikesController@add');
+Route::post('/likes/{like}', 'LikesController@destroy');

@@ -27,7 +27,11 @@ class PostsController extends Controller
     {
         $user = User::findOrFail(Auth::id());
 
-        $posts= Post::with('comments')->where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(10);
+        $posts= Post::with('comments')
+            ->with('likes')
+            ->where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
         return view('users.show', compact('user','posts'));
     }
 
@@ -72,7 +76,6 @@ class PostsController extends Controller
     public function show($id)
     {
         $post = Post::with('comments')->findOrFail($id)->orderBy('created_at', 'desc')->paginate(10);
-        dd($post);
 //        $comments = Comment::where('post_id', $id)->get();
         return view('posts.show', compact('post'));
     }

@@ -30,11 +30,21 @@ class WallsController extends Controller
 
         if(is_admin())
         {
-            $posts= Post::with('comments')->whereIn('user_id', $id_mine_friends)->orderBy('created_at', 'desc')
-                ->withTrashed()->paginate(10);
+            $posts= Post::with('comments.user')
+                ->with('comments.likes')
+                ->with('likes')
+                ->whereIn('user_id', $id_mine_friends)
+                ->orderBy('created_at', 'desc')
+                ->withTrashed()
+                ->paginate(10);
         } else
         {
-            $posts= Post::with('comments')->whereIn('user_id', $id_mine_friends)->orderBy('created_at', 'desc')->paginate(10);
+            $posts= Post::with('comments.user')
+                ->with('comments.likes')
+                ->with('likes')
+                ->whereIn('user_id', $id_mine_friends)
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
         }
 
 

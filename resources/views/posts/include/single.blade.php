@@ -14,7 +14,9 @@
             </div>
             <div class="card-body">
                 <p>{{ $post->content }}</p>
+                    @include('posts.include.likes')
             </div>
+
             <div class="card-footer bg-transparent border-grey">
                 @if (Auth::check())
                     @include('comments.create')

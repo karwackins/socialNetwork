@@ -62,6 +62,8 @@ class UsersController extends Controller
         if(is_admin())
         {
             $posts = Post::with('comments.user')
+                ->with('comments.likes')
+                ->with('likes')
                 ->where('user_id', $id)
                 ->orderBy('created_at', 'desc')
                 ->withTrashed()
@@ -69,6 +71,8 @@ class UsersController extends Controller
         }else
         {
             $posts = Post::with('comments.user')
+                ->with('comments.likes')
+                ->with('likes')
                 ->where('user_id', $id)
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
